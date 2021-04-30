@@ -1,0 +1,11 @@
+name;r2_score;RMSE;time;parameters
+median;0.44693192405600146;25.48705798514881;0.02099752426147461;
+mean;0.4733357503223514;24.102092033965167;0.009997367858886719;
+Kmeans;0.5427426148004991;22.41689899430114;2.586000442504883;{'n_clusters': 5}
+KNN;0.550525748966079;20.33149387693492;1.6269991397857666;{'weights': 'uniform', 'n_neighbors': 33}
+DecisionTree;0.7576827220468345;9.32736722131351;6.766030311584473;{'estimator__min_samples_split': 2, 'estimator__min_samples_leaf': 4, 'estimator__max_depth': 36}
+ANN;0.774289297747601;9.697318472252224;62.8895046710968;
+LinearRegression;0.784371233720608;9.535557000518887;0.14768457412719727;
+RandomForestRegressor;0.813440791371678;7.90716383072736;354.86287331581116;{'estimator__max_depth': 44, 'estimator__min_samples_leaf': 2, 'estimator__min_samples_split': 6, 'estimator__n_estimators': 81}
+ExtraTreesRegressor;0.8334043285493452;7.643608991107046;321.8091971874237;{'estimator__max_depth': 32, 'estimator__min_samples_leaf': 3, 'estimator__min_samples_split': 7, 'estimator__n_estimators': 81}
+EM;0.8602078586931309;5.176333519911456;3.0604331493377686;{'num_iters': 3}
