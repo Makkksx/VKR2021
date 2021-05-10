@@ -82,13 +82,12 @@ class EM(BaseEstimator, TransformerMixin):
 
 
 def kmeans_missing(dataset, n_clusters=5):
-    missing = ~np.isfinite(dataset)
-    mu = np.nanmean(dataset, 0)
-    x_hat = np.where(missing, mu, dataset)  # Начальное заполнение средними
+    mask = dataset != dataset
+    x_hat = SimpleImputer(strategy='mean').fit_transform(dataset)
     cls = KMeans(n_clusters)
     labels = cls.fit_predict(x_hat)
     centroids = cls.cluster_centers_
-    x_hat[missing] = centroids[labels][missing]
+    x_hat[mask] = centroids[labels][mask]
     return pd.DataFrame(x_hat)
 
 
