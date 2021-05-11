@@ -67,7 +67,7 @@ def experiment_randomized_search(df, df_full, score, impute_estimator, parameter
 
 def experiment_KNN(df, df_full, score, parameters=None):
     if parameters is None:
-        parameters = {'n_neighbors': range(5, 50, 2), 'weights': ['uniform', 'distance']}
+        parameters = {'n_neighbors': range(2, 50, 2), 'weights': ['uniform', 'distance']}
     experiment_randomized_search(df, df_full, score, utils.KNN(), parameters, n_iter=20)
 
 
@@ -99,14 +99,14 @@ def experiment_halving_random_search(df, df_full, score, impute_estimator, param
 
 def experiment_RandomForest(df, df_full, score, parameters=None):
     if parameters is None:
-        parameters = {'estimator__max_depth': randint(3, 50), 'estimator__min_samples_split': randint(2, 20),
+        parameters = {'estimator__max_depth': randint(3, 100), 'estimator__min_samples_split': randint(2, 20),
                       'estimator__min_samples_leaf': randint(1, 20)}
     experiment_halving_random_search(df, df_full, score, RandomForestRegressor(), parameters)
 
 
 def experiment_ExtraTrees(df, df_full, score, parameters=None):
     if parameters is None:
-        parameters = {'estimator__max_depth': randint(3, 50), 'estimator__min_samples_split': randint(2, 20),
+        parameters = {'estimator__max_depth': randint(3, 100), 'estimator__min_samples_split': randint(2, 20),
                       'estimator__min_samples_leaf': randint(1, 20)}
     experiment_halving_random_search(df, df_full, score, ExtraTreesRegressor(), parameters)
 
