@@ -6,8 +6,8 @@ from sklearn.impute import IterativeImputer
 from sklearn.impute import KNNImputer
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans
-from sklearn.metrics import r2_score
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.metrics import mean_squared_error
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -35,7 +35,7 @@ class CustomImputer(BaseEstimator, TransformerMixin):
         return imputer.fit_transform(x)
 
     def score(self, x, y_true):
-        return r2_score(y_true, self.transform(x))
+        return -mean_squared_error(y_true, self.transform(x))
 
 
 def em_imputer(data, num_iters=3):
@@ -78,7 +78,7 @@ class EM(BaseEstimator, TransformerMixin):
         return df_filled
 
     def score(self, x, y_true):
-        return r2_score(y_true, self.transform(x))
+        return -mean_squared_error(y_true, self.transform(x))
 
 
 def kmeans_missing(dataset, n_clusters=5):
@@ -113,7 +113,7 @@ class Kmeans(BaseEstimator, TransformerMixin):
         return df_filled
 
     def score(self, x, y_true):
-        return r2_score(y_true, self.transform(x))
+        return -mean_squared_error(y_true, self.transform(x))
 
 
 class KNN(BaseEstimator, TransformerMixin):
@@ -140,4 +140,4 @@ class KNN(BaseEstimator, TransformerMixin):
         return pd.DataFrame(imputer.transform(x))
 
     def score(self, x, y_true):
-        return r2_score(y_true, self.transform(x))
+        return -mean_squared_error(y_true, self.transform(x))

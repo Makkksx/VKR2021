@@ -67,7 +67,7 @@ def main_func(dataset, dataset_name):
 
 
 # Чтение данных
-abalone = pd.read_csv('abalone.data', header=None)
+abalone = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data', header=None)
 abalone = abalone.iloc[:, :-1]
 boston, _ = datasets.load_boston(return_X_y=True)
 boston = pd.DataFrame(boston)
