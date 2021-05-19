@@ -7,7 +7,7 @@ from sklearn.impute import KNNImputer
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import KMeans
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -25,7 +25,6 @@ class CustomImputer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, x):
-        x = x.copy()
         x_imputed = self.apply_imputer(x)
         return pd.DataFrame(x_imputed,
                             columns=self.cols)
@@ -35,7 +34,7 @@ class CustomImputer(BaseEstimator, TransformerMixin):
         return imputer.fit_transform(x)
 
     def score(self, x, y_true):
-        return -mean_squared_error(y_true, self.transform(x))
+        return r2_score(y_true, self.transform(x))
 
 
 def em_imputer(data, num_iters=3):
@@ -68,7 +67,6 @@ class EM(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, x):
-        x = x.copy()
         x_imputed = self.apply_imputer(x)
         return pd.DataFrame(x_imputed,
                             columns=self.cols)
@@ -78,7 +76,7 @@ class EM(BaseEstimator, TransformerMixin):
         return df_filled
 
     def score(self, x, y_true):
-        return -mean_squared_error(y_true, self.transform(x))
+        return r2_score(y_true, self.transform(x))
 
 
 def kmeans_missing(dataset, n_clusters=5):
@@ -103,7 +101,6 @@ class Kmeans(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, x):
-        x = x.copy()
         x_imputed = self.apply_imputer(x)
         return pd.DataFrame(x_imputed,
                             columns=self.cols)
@@ -113,14 +110,13 @@ class Kmeans(BaseEstimator, TransformerMixin):
         return df_filled
 
     def score(self, x, y_true):
-        return -mean_squared_error(y_true, self.transform(x))
+        return r2_score(y_true, self.transform(x))
 
 
 class KNN(BaseEstimator, TransformerMixin):
 
-    def __init__(self, n_neighbors=5, weights='uniform'):
+    def __init__(self, n_neighbors=5):
         self.n_neighbors = n_neighbors
-        self.weights = weights
         self.cols = None
 
     def fit(self, x, y=None):
@@ -129,15 +125,14 @@ class KNN(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, x):
-        x = x.copy()
         x_imputed = self.apply_imputer(x)
         return pd.DataFrame(x_imputed,
                             columns=self.cols)
 
     def apply_imputer(self, x):
-        imputer = KNNImputer(n_neighbors=self.n_neighbors, weights=self.weights)
+        imputer = KNNImputer(n_neighbors=self.n_neighbors)
         imputer.fit(x)
         return pd.DataFrame(imputer.transform(x))
 
     def score(self, x, y_true):
-        return -mean_squared_error(y_true, self.transform(x))
+        return r2_score(y_true, self.transform(x))

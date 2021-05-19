@@ -24,37 +24,36 @@ def main_func(dataset, dataset_name):
     dataset10 = miss_the_data(dataset, 10)
     dataset30 = miss_the_data(dataset, 30)
     dataset50 = miss_the_data(dataset, 50)
-    score = pd.DataFrame()
-    score['name'] = ['mean', 'median', 'DecisionTree', 'KNN', 'LinearRegression', 'Kmeans', 'EM',
-                     'ExtraTreesRegressor', 'RandomForestRegressor', 'ANN'
-                     ]
-    score = score.set_index(score.name)
-    score = score.drop(columns='name')
-    score['r2_score'] = 0
-    score['RMSE'] = 0
-    score['time'] = 0
-    score['parameters'] = ''
-    score30 = score.copy()
-    score50 = score.copy()
+    score10 = pd.DataFrame()
+    score10['name'] = ['mean', 'median', 'Decision Tree', 'K-nearest neighbors', 'Linear Regression', 'K-means',
+                       'EM algorithm', 'Extra Trees', 'Random Forest', 'ANN'
+                       ]
+    score10 = score10.set_index(score10.name)
+    score10 = score10.drop(columns='name')
+    score10['r2_score'] = 0
+    score10['time'] = 0
+    score10['parameters'] = ''
+    score30 = score10.copy()
+    score50 = score10.copy()
     print("10")
-    experiments.all_experiments(dataset10, dataset, score)
+    experiments.all_experiments(dataset10, dataset, score10, dataset_name, 10)
     print("30")
-    experiments.all_experiments(dataset30, dataset, score30)
+    experiments.all_experiments(dataset30, dataset, score30, dataset_name, 30)
     print("50")
-    experiments.all_experiments(dataset50, dataset, score50)
+    experiments.all_experiments(dataset50, dataset, score50, dataset_name, 50)
 
     if not os.path.exists('.\\results'):
         os.mkdir('.\\results')
 
-    score.to_csv('.\\results\\score10_{}.csv'.format(dataset_name), sep=";")
+    score10.to_csv('.\\results\\score10_{}.csv'.format(dataset_name), sep=";")
     score30.to_csv('.\\results\\score30_{}.csv'.format(dataset_name), sep=";")
     score50.to_csv('.\\results\\score50_{}.csv'.format(dataset_name), sep=";")
     x = [10, 30, 50]
     plt.figure(figsize=(8, 5))
     cmap = plt.get_cmap('jet_r')
-    color = [cmap(float(i) / score.shape[0]) for i in range(score.shape[0])]
-    for method in score.index:
-        plt.plot(x, [score.loc[method, 'r2_score'], score30.loc[method, 'r2_score'], score50.loc[method, 'r2_score']],
+    color = [cmap(float(i) / score10.shape[0]) for i in range(score10.shape[0])]
+    for method in score10.index:
+        plt.plot(x, [score10.loc[method, 'r2_score'], score30.loc[method, 'r2_score'], score50.loc[method, 'r2_score']],
                  label=method, lw=1.5, c=color.pop())
     plt.title(dataset_name)
     plt.xlabel("Missing value fraction")
@@ -63,7 +62,10 @@ def main_func(dataset, dataset_name):
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
     plt.savefig('.\\results\\results_{}.png'.format(dataset_name))
-    plt.show()
+    # plt.show()
+    # print(score10)
+    # print(score30)
+    # print(score50)
 
 
 # Чтение данных
@@ -80,3 +82,4 @@ main_func(abalone, "Abalone")  # shape=(4177, 8), n=33416
 main_func(boston, "Boston")  # shape=(506, 13), n=6578
 main_func(california, "California")  # shape=(20640, 8), n=165120
 main_func(cancer, "Cancer")  # shape=(569, 30), n=17070
+os.system('shutdown -s')
